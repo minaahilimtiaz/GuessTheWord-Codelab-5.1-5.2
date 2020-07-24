@@ -22,22 +22,11 @@ class GameFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.game_fragment, container, false)
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
-        viewModel.score.observe(viewLifecycleOwner, Observer { observedScore -> binding.scoreText.text = observedScore.toString() })
-        viewModel.word.observe(viewLifecycleOwner, Observer { observedWord -> binding.wordText.text = observedWord })
+        binding.gameViewModel = viewModel;
+        binding.lifecycleOwner = viewLifecycleOwner
         viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer<Boolean> { hasFinished -> if (hasFinished) onEnd() })
-        binding.correctButton.setOnClickListener { onCorrect() }
-        binding.skipButton.setOnClickListener { onSkip() }
-        binding.endGameButton.setOnClickListener { onEnd() }
         return binding.root
 
-    }
-
-    private fun onSkip() {
-        viewModel.onSkip()
-    }
-
-    private fun onCorrect() {
-        viewModel.onCorrect()
     }
 
     private fun onEnd() {

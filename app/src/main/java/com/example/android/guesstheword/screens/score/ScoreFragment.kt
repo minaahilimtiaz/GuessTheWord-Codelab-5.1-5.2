@@ -19,17 +19,14 @@ class ScoreFragment : Fragment() {
     private lateinit var viewModelFactory: ScoreViewModelFactory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         val binding: ScoreFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.score_fragment, container, false)
         viewModelFactory = ScoreViewModelFactory(ScoreFragmentArgs.fromBundle(arguments!!).score)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ScoreViewModel::class.java)
-        viewModel.score.observe(viewLifecycleOwner, Observer { newScore -> binding.scoreText.text = newScore.toString() })
-        viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer { playAgain -> playAgainComplete(playAgain) })
-        binding.playAgainButton.setOnClickListener { onPlayAgain() }
+        binding.scoreViewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer<Boolean> { playAgain -> playAgainComplete(playAgain) })
         return binding.root
-    }
-
-    private fun onPlayAgain() {
-        viewModel.onPlayAgain()
     }
 
     private fun playAgainComplete(playAgain: Boolean) {
