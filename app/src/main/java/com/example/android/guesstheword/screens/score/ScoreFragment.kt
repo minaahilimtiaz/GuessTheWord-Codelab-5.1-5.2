@@ -23,8 +23,10 @@ class ScoreFragment : Fragment() {
         val binding: ScoreFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.score_fragment, container, false)
         viewModelFactory = ScoreViewModelFactory(ScoreFragmentArgs.fromBundle(arguments!!).score)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ScoreViewModel::class.java)
-        binding.scoreViewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        binding.apply {
+            this.scoreViewModel = viewModel
+            this.lifecycleOwner = viewLifecycleOwner
+        }
         viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer<Boolean> { playAgain -> playAgainComplete(playAgain) })
         return binding.root
     }
